@@ -11,14 +11,17 @@ LICENSE="MIT"
 SLOT="0"
 KEYWORDS="amd64 arm arm64 x86"
 
+DEPEND="dev-cpp/argparse"
 BDEPEND=">=dev-build/cmake-3.25"
+
+PATCHES=("${FILESDIR}/${P}-system-argparse.patch")
 
 src_configure() {
 	cmake -B build -S . -DCMAKE_BUILD_TYPE=Release || die
 }
 
 src_compile() {
-	cmake --build build --target gen-envel || die
+	cmake --build build || die
 }
 
 src_install() {
