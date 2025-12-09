@@ -3,8 +3,6 @@
 
 EAPI=8
 
-inherit cmake
-
 DESCRIPTION="Utility to record environment variables in a form readable by Emacs"
 HOMEPAGE="https://github.com/hjiang/envel"
 SRC_URI="https://github.com/hjiang/${PN}/archive/refs/tags/v${PV}.tar.gz -> ${P}.tar.gz"
@@ -15,6 +13,14 @@ KEYWORDS="amd64 arm arm64 x86"
 
 BDEPEND=">=dev-build/cmake-3.25"
 
+src_configure() {
+	cmake -B build -S . -DCMAKE_BUILD_TYPE=Release || die
+}
+
+src_compile() {
+	cmake --build build --target gen-envel || die
+}
+
 src_install() {
-	dobin "${BUILD_DIR}"/src/gen-envel
+	dobin build/src/gen-envel
 }
